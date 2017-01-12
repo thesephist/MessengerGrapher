@@ -1,0 +1,5 @@
+*.htm
+.ipynb_checkpoints/*
+graphs/*
+*.pkl
+__pycache__/*
