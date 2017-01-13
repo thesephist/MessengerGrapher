@@ -5,7 +5,7 @@
 * Pandas
 * Matplotlib
 * BeautifulSoup4
-
+ 
 ## How To
 1. Install all the dependencies
 2. Download/clone this repository
