@@ -46,7 +46,12 @@ for thread in soup.findAll('div', class_="thread"):
         if item.name == "div" and item["class"][0] == "message":
 
             datestring = item.contents[0].contents[1].contents[0]
-            timestamp = datetime.strptime(datestring, '%A, %B %d, %Y at %I:%M%p %Z')
+            
+            try:
+                timestamp = datetime.strptime(datestring, '%A, %B %d, %Y at %I:%M%p')
+            except ValueError:
+                from dateutil.parser import parse
+                parse(datestring)
 
             person_sending = item.contents[0].contents[0].contents[0]
             sent_by_me = True if person_sending == ME else False
