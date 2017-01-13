@@ -19,10 +19,10 @@
 ## Results
 Here are a few examples of the type of graphs generated:
 
-![graph one](http://www.rohanp.xyz/images/cumulative2.png)
-![graph two](http://www.rohanp.xyz/images/number_messaged_by_day2.png)
-![graph three](http://www.rohanp.xyz/images/messaging_by_sex2.png)
-![graph four](http://www.rohanp.xyz/images/total_sent_received2.png)
+![graph](http://www.rohanp.xyz/images/cumulative2.png)
+![graph](http://www.rohanp.xyz/images/number_messaged_by_day2.png)
+![graph](http://www.rohanp.xyz/images/messaging_by_sex2.png)
+![graph](http://www.rohanp.xyz/images/total_sent_received2.png)
 
 ## Want to contribute? Here's some features to consider
 * Additional parameters: who messaged first, average reply time.
