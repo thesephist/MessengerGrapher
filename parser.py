@@ -51,6 +51,7 @@ for thread in soup.findAll('div', class_="thread"):
                 timestamp = datetime.strptime(datestring, '%A, %B %d, %Y at %I:%M%p')
             except ValueError:
                 from dateutil.parser import parse
+                timestamp = ' '.join(timestamp.split()[-1]) # remove timezone
                 timestamp = parse(datestring)
 
             person_sending = item.contents[0].contents[0].contents[0]
