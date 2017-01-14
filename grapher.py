@@ -21,10 +21,10 @@ end_date = datetime.strptime(END_DATE, "%m/%d/%y")
 delta = (end_date - start_date).days
 
 for msg in messages:
-
     if msg.person in msgs_by_day.keys():
-        if start_date < msg.timestamp < end_date:
-                idx = (msg.timestamp - start_date).days
+        message_time = msg.timestamp.replace(tzinfo=None)
+        if start_date < message_time < end_date:
+                idx = (message_time - start_date).days
                 msgs_by_day[msg.person][idx] += 1
     else:
         msgs_by_day[msg.person] = [0] * delta
@@ -76,8 +76,9 @@ msgs_sex_by_day = {} # msgs[sex] = array of days
 
 for msg in messages:
     if msg.sex in msgs_sex_by_day.keys():
-        if start_date < msg.timestamp < end_date:
-                idx = (msg.timestamp - start_date).days
+        message_time = msg.timestamp.replace(tzinfo=None)
+        if start_date < message_time < end_date:
+                idx = (message_time - start_date).days
                 msgs_sex_by_day[msg.sex][idx] += 1
     else:
         msgs_sex_by_day[msg.sex] = [0] * delta
@@ -110,7 +111,7 @@ fig.savefig("graphs/messaging_by_sex.png", bbox_inches='tight')
 
 #########################
 
-messages_in_range = filter(lambda x: start_date < x.timestamp < end_date, messages)
+messages_in_range = filter(lambda x: start_date < x.timestamp.replace(tzinfo=None) < end_date, messages)
 
 df = pd.DataFrame(list(messages_in_range), columns=Message._fields)
 df = df[["person", "sent_by_me"]]
