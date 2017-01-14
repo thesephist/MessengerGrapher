@@ -7,7 +7,7 @@ import os.path
 from bs4 import BeautifulSoup
 from userinfo import ME, API_KEY
 
-soup = BeautifulSoup(open("messages.htm").read(), 'html.parser')
+soup = BeautifulSoup(open("messages.htm", encoding='utf8').read(), 'html.parser')
 Message = namedtuple("Message", ['person', 'sent_by_me', 'timestamp', 'sex'])
                          # types: str,      bool,         datetime,     str
 messages = []
@@ -46,7 +46,7 @@ for thread in soup.findAll('div', class_="thread"):
         if item.name == "div" and item["class"][0] == "message":
 
             datestring = item.contents[0].contents[1].contents[0]
-            
+
             try:
                 timestamp = datetime.strptime(datestring, '%A, %B %d, %Y at %I:%M%p')
             except ValueError:
