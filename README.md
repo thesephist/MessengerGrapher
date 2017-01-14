@@ -1,7 +1,7 @@
 # Facebook Messenger Data Grapher
 
 ## Dependencies
-* Python 3
+* Python 3 (64 bit)
 * Pandas
 * Matplotlib
 * BeautifulSoup4
