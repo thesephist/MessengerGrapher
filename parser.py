@@ -46,7 +46,7 @@ for thread in soup.findAll('div', class_="thread"):
         if item.name == "div" and item["class"][0] == "message":
 
             datestring = item.contents[0].contents[1].contents[0]
-            
+
             try:
                 timestamp = datetime.strptime(datestring, '%A, %B %d, %Y at %I:%M%p')
             except ValueError:
