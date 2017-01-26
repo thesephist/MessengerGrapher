@@ -1,6 +1,9 @@
 # Facebook Messenger Data Grapher
 
 ## Dependencies
+
+(be sure to install with pip3 to install for python3)
+
 * Python 3 ****64 bit****
 * Pandas
 * Matplotlib
@@ -15,14 +18,6 @@
 6. Run `python parser.py`
 7. Run `python grapher.py`
 8. Graphs will be generated and saved in the `graphs` folder
-
-## Results
-Here are a few examples of the type of graphs generated:
-
-![graph one](http://rohanp.xyz/images/cumulative3.png)
-![graph two](http://rohanp.xyz/images/number_messaged_by_day3.png)
-![graph three](http://rohanp.xyz/images/messaging_by_sex3.png)
-![graph four](http://rohanp.xyz/images/total_sent_received3.png)
 
 ## Want to contribute? Here's some features to consider
 * Additional parameters: who messaged first, average reply time.
