@@ -70,45 +70,61 @@ plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
 fig = ax.get_figure()
 fig.savefig("graphs/cumulative_messaging_by_day.png", bbox_inches='tight')
 
-####################
-
-msgs_sex_by_day = {} # msgs[sex] = array of days
-
-for msg in messages:
-    if msg.sex in msgs_sex_by_day.keys():
-        message_time = msg.timestamp.replace(tzinfo=None)
-        if start_date < message_time < end_date:
-                idx = (message_time - start_date).days
-                msgs_sex_by_day[msg.sex][idx] += 1
-    else:
-        msgs_sex_by_day[msg.sex] = [0] * delta
-
-msgs_sex_by_day = OrderedDict( sorted(msgs_sex_by_day.items(), key=lambda i: -sum(i[1])) )
-sex_data = pd.DataFrame(msgs_sex_by_day, index=pd.date_range(start_date, periods=delta))
-
-toPlot = cumMsgPlot(sex_data, start=0, end=10)
-
-if toPlot.columns[0] == "female":
-    color = ['pink', 'lightblue', 'black']
-else:
-    color = ['lightblue', 'pink', 'black']
-
-ax = toPlot.plot(title="Cumulative Messaging Data by Sex", legend=True,
-                 color=color, figsize=(7,5))
-
-ax.set_ylabel("Cumulative Number Messages")
+toPlot = cumMsgPlot(data, start=6, end=20)
+ax = toPlot.plot(title="Cumulative Messaging Data (Top 20 Most Talked To)", legend=True, figsize=(10,7))
+ax.set_ylabel("Cumulative Number of Messages")
 ax.set_xlabel("Date")
 plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
 fig = ax.get_figure()
-fig.savefig("graphs/cumulative_messaging_by_sex.png", bbox_inches='tight')
+fig.savefig("graphs/cumulative_messaging_by_day_2.png", bbox_inches='tight')
 
-toPlot = pd.rolling_mean(sex_data, 5)
-
-ax = toPlot.plot(title="Messaging Data by Sex", legend=True,
-                 color=color, figsize=(10,5))
+toPlot = cumMsgPlot(data, start=20, end=35)
+ax = toPlot.plot(title="Cumulative Messaging Data (Top 35 Most Talked To)", legend=True, figsize=(10,7))
+ax.set_ylabel("Cumulative Number of Messages")
+ax.set_xlabel("Date")
+plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
 fig = ax.get_figure()
-fig.savefig("graphs/messaging_by_sex.png", bbox_inches='tight')
+fig.savefig("graphs/cumulative_messaging_by_day_3.png", bbox_inches='tight')
 
+####################
+# 
+# msgs_sex_by_day = {} # msgs[sex] = array of days
+# 
+# for msg in messages:
+#     if msg.sex in msgs_sex_by_day.keys():
+#         message_time = msg.timestamp.replace(tzinfo=None)
+#         if start_date < message_time < end_date:
+#                 idx = (message_time - start_date).days
+#                 msgs_sex_by_day[msg.sex][idx] += 1
+#     else:
+#         msgs_sex_by_day[msg.sex] = [0] * delta
+# 
+# msgs_sex_by_day = OrderedDict( sorted(msgs_sex_by_day.items(), key=lambda i: -sum(i[1])) )
+# sex_data = pd.DataFrame(msgs_sex_by_day, index=pd.date_range(start_date, periods=delta))
+# 
+# toPlot = cumMsgPlot(sex_data, start=0, end=10)
+# 
+# if toPlot.columns[0] == "female":
+#     color = ['(0.5, 0, 0, 0)', '(0, 0, 0', 'black']
+# else:
+#     color = ['#ff0000', '#0000ff', 'black']
+# 
+# ax = toPlot.plot(title="Cumulative Messaging Data by Sex", legend=True,
+#                  color=color, figsize=(7,5))
+# 
+# ax.set_ylabel("Cumulative Number Messages")
+# ax.set_xlabel("Date")
+# plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
+# fig = ax.get_figure()
+# fig.savefig("graphs/cumulative_messaging_by_sex.png", bbox_inches='tight')
+# 
+# toPlot = pd.rolling_mean(sex_data, 5)
+# 
+# ax = toPlot.plot(title="Messaging Data by Sex", legend=True,
+#                  color=color, figsize=(10,5))
+# fig = ax.get_figure()
+# fig.savefig("graphs/messaging_by_sex.png", bbox_inches='tight')
+# 
 #########################
 
 messages_in_range = filter(lambda x: start_date < x.timestamp.replace(tzinfo=None) < end_date, messages)
@@ -122,7 +138,7 @@ df['total'] = df['sent'] | df['received']
 
 grouped = df.groupby('person')
 sent_received = grouped.sum().sort_values('total', ascending=False)
-toPlot = sent_received[["sent", "received"]].ix[:15, :]
+toPlot = sent_received[["sent", "received"]].ix[:10, :]
 
 ax = toPlot.plot.bar(title="Total Messages Sent/Received (Top 15 Most Talked To)", stacked=True, color=('b', 'r'), figsize=(10, 5))
 ax.set_ylabel("Number of Messages")
@@ -130,5 +146,25 @@ ax.set_xlabel("Person")
 
 fig = ax.get_figure()
 fig.savefig("graphs/total_sent_received_by_person.png", bbox_inches='tight')
+
+messages_in_range = filter(lambda x: start_date < x.timestamp.replace(tzinfo=None) < end_date, messages)
+
+df = pd.DataFrame(list(messages_in_range), columns=Message._fields)
+df = df[["person", "sent_by_me"]]
+df.columns = ["person", "sent"]
+
+df['received'] = pd.Series(~df["sent"], index=df.index)
+df['total'] = df['sent'] | df['received']
+
+grouped = df.groupby('person')
+sent_received = grouped.sum().sort_values('total', ascending=False)
+toPlot = sent_received[["sent", "received"]].ix[10:25, :]
+
+ax = toPlot.plot.bar(title="Total Messages Sent/Received (Top 25 Most Talked To)", stacked=True, color=('b', 'r'), figsize=(10, 5))
+ax.set_ylabel("Number of Messages")
+ax.set_xlabel("Person")
+
+fig = ax.get_figure()
+fig.savefig("graphs/total_sent_received_by_person_2.png", bbox_inches='tight')
 
 print("\nDone! Graphs saved in 'graphs' folder")

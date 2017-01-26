@@ -33,7 +33,11 @@ def get_sex(name):
 
 for thread in soup.findAll('div', class_="thread"):
 
-    people = list(map(str.strip, thread.contents[0].split(',')))
+    try:
+        people = list(map(str.strip, thread.contents[0].split(',')))
+        print(people)
+    except:
+        continue
 
     if 2 != len(people): # skip group chats for now
         continue
